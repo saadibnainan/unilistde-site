@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>Sign in: uniList DE</title>
+<style>
+  :root { --blue:#0066cc; --ink:#1d1d1f; --ink-3:#6e6e73; --line:#d2d2d7; --bad:#b3261e; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; display: grid; place-items: center; padding: 16px; background: #f5f5f7; color: var(--ink);
+    font: 17px/1.47 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", system-ui, Roboto, sans-serif; letter-spacing: -0.022em; -webkit-font-smoothing: antialiased; }
+  body.wait main { visibility: hidden; }
+  main { width: 100%; max-width: 380px; padding: 32px 24px; background: #fff; border-radius: 18px; box-shadow: 0 0 0 1px #e8e8ed; }
+  h1 { margin: 0 0 4px; font: 600 28px/1.1 -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif; letter-spacing: -0.03em; }
+  h1 span { color: var(--blue); }
+  p { margin: 0 0 24px; color: var(--ink-3); font-size: 14px; }
+  form { display: grid; gap: 16px; }
+  label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+  input[type=text], input[type=password] { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; font: inherit; font-weight: 400; color: inherit; background: #fff; }
+  input:focus { border-color: var(--blue); outline: 2px solid rgba(0,113,227,.25); outline-offset: 0; }
+  .check { display: flex; align-items: center; gap: 8px; font-weight: 400; }
+  .check input { width: 18px; height: 18px; margin: 0; accent-color: var(--blue); }
+  button { min-height: 44px; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font: inherit; cursor: pointer; }
+  button:disabled { background: var(--line); color: #424245; cursor: progress; }
+  button:focus-visible { outline: 2px solid #0071e3; outline-offset: 2px; }
+  .err { min-height: 20px; margin: 0; color: var(--bad); font-size: 14px; }
+</style>
+</head>
+<body class="wait">
+<main>
+  <h1>uniList<span>DE</span></h1>
+  <p>This site is private. Sign in with the credentials you were given.</p>
+  <form id="f" autocomplete="on">
+    <label>Username <input type="text" id="u" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+    <label>Password <input type="password" id="p" name="password" autocomplete="current-password" required></label>
+    <label class="check"><input type="checkbox" id="r"> Remember this device</label>
+    <button id="b" type="submit">Sign in</button>
+    <p class="err" id="e" role="alert"></p>
+  </form>
+</main>
+<script>
+(() => {
+  const KEYRING = {"v":1,"iter":600000,"users":{"9813ba6cee63ca7877e15a4198fd68dc547dd227cd6344d6c469c0617b73aa99":{"iv":"8YIy4WWxPS7L4ukZ","k":"6tRPwmRvdwOZzoa3z/83nwIt6Bo3PattpwhvLn/Uobwe/H6YMy0M9qNpjrBkaQEW"}}};
+  const PAGE = "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";
+  const S = crypto.subtle, te = new TextEncoder();
+  const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const b64 = (u8) => btoa(String.fromCharCode(...u8));
+  const sha = async (s) => new Uint8Array(await S.digest("SHA-256", te.encode(s)));
+  const hex = (u8) => [...u8].map((x) => x.toString(16).padStart(2, "0")).join("");
+  const get = (st, k) => { try { return st.getItem(k); } catch { return null; } };
+  const set = (st, k, v) => { try { st.setItem(k, v); } catch {} };
+  const del = (st, k) => { try { st.removeItem(k); } catch {} };
+
+  async function aes(raw, iv, data) {
+    const key = await S.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+    return new Uint8Array(await S.decrypt({ name: "AES-GCM", iv }, key, data));
+  }
+  async function kekFor(name, pw) {
+    const salt = (await sha("unilistde-salt:" + name)).slice(0, 16);
+    const base = await S.importKey("raw", te.encode(pw), "PBKDF2", false, ["deriveBits"]);
+    return new Uint8Array(await S.deriveBits({ name: "PBKDF2", salt, iterations: KEYRING.iter, hash: "SHA-256" }, base, 256));
+  }
+  async function unwrap(name, kek) {
+    const entry = KEYRING.users[hex(await sha("unilistde-user:" + name))];
+    if (!entry) throw new Error("unknown");
+    return aes(kek, unb64(entry.iv), unb64(entry.k));
+  }
+  // the user's own key stays in this tab; the page and the data unwrap the current content key with it
+  async function open(name, kek) {
+    const cek = await unwrap(name, kek);
+    const sealed = unb64(PAGE);
+    const zipped = await aes(cek, sealed.slice(0, 12), sealed.slice(12));
+    const html = await new Response(new Blob([zipped]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
+    set(sessionStorage, "unilistde.user", JSON.stringify({ n: name, k: b64(kek) }));
+    document.open();
+    document.write(html);
+    document.close();
+  }
+
+  async function auto() {
+    del(sessionStorage, "unilistde.cek"); // from the first version of this page
+    for (const [st, key] of [[sessionStorage, "unilistde.user"], [localStorage, "unilistde.remember"]]) {
+      const v = get(st, key);
+      if (!v) continue;
+      try { const { n, k } = JSON.parse(v); return await open(n, unb64(k)); }
+      catch { del(st, key); }
+    }
+    document.body.classList.remove("wait");
+    document.getElementById("u").focus();
+  }
+
+  document.getElementById("f").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const btn = document.getElementById("b"), err = document.getElementById("e");
+    const name = document.getElementById("u").value.trim().toLowerCase();
+    const pw = document.getElementById("p").value;
+    btn.disabled = true; btn.textContent = "Signing in…"; err.textContent = "";
+    try {
+      const kek = await kekFor(name, pw);
+      await unwrap(name, kek); // throws on a wrong username or password
+      if (document.getElementById("r").checked) set(localStorage, "unilistde.remember", JSON.stringify({ n: name, k: b64(kek) }));
+      await open(name, kek);
+    } catch {
+      err.textContent = "Wrong username or password.";
+      btn.disabled = false; btn.textContent = "Sign in";
+      document.getElementById("p").select();
+    }
+  });
+
+  if (!window.crypto || !crypto.subtle || typeof DecompressionStream === "undefined") {
+    document.body.classList.remove("wait");
+    document.getElementById("e").textContent = "This browser is too old to open the site. Please update it.";
+    document.getElementById("b").disabled = true;
+  } else auto();
+})();
+</script>
+</body>
+</html>
